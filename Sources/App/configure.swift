@@ -1,4 +1,7 @@
 import Vapor
+import Leaf
+import Fluent
+import FluentSQLite
 
 /// Called before your application initializes.
 ///
@@ -14,4 +17,24 @@ public func configure(
     services.register(router, as: Router.self)
 
     // Configure the rest of your application here
+    try services.register(LeafProvider())
+    config.prefer(LeafRenderer.self, for: ViewRenderer.self)
+    
+    let directoryConfig = DirectoryConfig.detect()
+    services.register(directoryConfig)
+    
+    try services.register(FluentSQLiteProvider())
+    
+    var dataBaseConfig = DatabasesConfig()
+    let db = try SQLiteDatabase(storage: .file(path: "\(directoryConfig.workDir)cupcakes.db"))
+    dataBaseConfig.add(database: db, as: .sqlite)
+    services.register(dataBaseConfig)
+    
+    var migrationConfig = MigrationConfig()
+    migrationConfig.add(model: Cupcake.self, database: .sqlite)
+    migrationConfig.add(model: Order.self, database: .sqlite)
+    services.register(migrationConfig)
+    
+    
 }
+ 

@@ -1,8 +1,28 @@
 <html>
+<title>Cupcakes Vapor</title>
 <head>
 </head>
 <body>
 <h1>Cupcake  Corner</h1>
 <p>Welcome to Cupcake corner</p>
+<ul>
+  #for(cupcake in cupcakes) {
+  <li>#(cupcake.name)
+  <p>#(cupcake.price)</p></li>
+}
+</ul>
+<h2>Orders</h2>
+<ul>
+    #for(order in orders) {
+        <li> Order #(order.cakeName) for #(order.buyerName)</li>
+    }
+</ul>
+<h2> Add new Cupcake</h2>
+<form method="post" action="/add">
+  <p> Name: <input type="text" name="name" /></p>
+  <p> Description: <input type = "text" name = "description"/></p>
+  <p> Price: <input type = "number" name = "price"/></p>
+  <button type = "submit">Add</button>
+</form>
 </body>
 </html>
